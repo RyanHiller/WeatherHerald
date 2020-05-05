@@ -15,40 +15,49 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     private val apiKey = ""
     private val url = "https://www.google.com"
+    private val fragmentManager = supportFragmentManager
     private lateinit var queue: RequestQueue
-    private lateinit var textView: TextView
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var stringRequest: StringRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.topToolbar))
 
         queue = Volley.newRequestQueue(this)
-        textView = findViewById(R.id.textView2)
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu)
         stringRequest = StringRequest(Request.Method.GET, url, Response.Listener { response ->
-            textView.text = getText(R.string.str_http_pass)
+            //REQUEST RESPONSE HERE
         }, Response.ErrorListener { error ->
             Log.i("WEATHERLOG", "ERROR: $error")
-            textView.text = getString(R.string.str_http_fail)
         })
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home_page -> {
-                    textView.text = getText(R.string.str_home)
+                    val fragment = HomeFragment()
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.replace(R.id.content_layout, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
                     true
                 }
 
                 R.id.forecast_page -> {
-                    textView.text = getText(R.string.str_forecast)
+                    val fragment = ForecastFragment()
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.replace(R.id.content_layout, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
                     true
                 }
 
                 R.id.settings_page -> {
-                    textView.text = getText(R.string.str_settings)
+                    val fragment = SettingsFragment()
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.replace(R.id.content_layout, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
                     true
                 }
 
