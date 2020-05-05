@@ -6,6 +6,7 @@
     <string name="str_http_pass">HTTP Request Successful!</string>
     <string name="str_http_fail">HTTP Request Failed!</string>
     <string name="str_temp_toggle">F° ↔ C°</string>
+    <string name="str_ui_color_btn">Select UI Color</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
