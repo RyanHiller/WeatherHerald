@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Weather Herald</string>
+    <string name="str_http_fail">HTTP Request Failed!</string>
+</resources>
