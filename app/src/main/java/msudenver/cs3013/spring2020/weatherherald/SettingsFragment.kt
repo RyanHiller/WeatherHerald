@@ -1,59 +1,60 @@
 package msudenver.cs3013.spring2020.weatherherald
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.InputType
+import android.text.TextUtils
+import android.widget.Toast
+import androidx.preference.EditTextPreference
+import androidx.preference.Preference.SummaryProvider
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class SettingsFragment : PreferenceFragmentCompat() {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SettingsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        val tempToggle: SwitchPreferenceCompat? = findPreference("temp_toggle")
+        val hotPreference: EditTextPreference? = findPreference("temp_high")
+        val coldPreference: EditTextPreference? = findPreference("temp_low")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        // OnClick listener for temperature toggle
+        tempToggle?.setOnPreferenceClickListener {
+            val msg: String = if (tempToggle.isChecked) {
+                "Celsius Mode Enabled"
+            } else {
+                "Fahrenheit Mode Enabled"
             }
+            val toast = Toast.makeText(requireActivity().baseContext, msg, Toast.LENGTH_SHORT)
+            toast.show()
+            true
+        }
+
+        // Type binding for user input
+        hotPreference?.setOnBindEditTextListener { editText ->
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        coldPreference?.setOnBindEditTextListener { editText ->
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+        }
+
+        // Custom summary for hot/cold threshold fields
+        hotPreference?.summaryProvider = SummaryProvider<EditTextPreference> { preference ->
+            val text = preference.text
+            if (TextUtils.isEmpty(text)) {
+                getText(R.string.str_temp_high_summary)
+            } else {
+                "Personal Hot Threshold: $text"
+            }
+        }
+        coldPreference?.summaryProvider = SummaryProvider<EditTextPreference> { preference ->
+            val text = preference.text
+            if (TextUtils.isEmpty(text)) {
+                getText(R.string.str_temp_low_summary)
+            } else {
+                "Personal Cold Threshold: $text"
+            }
+        }
+
+        // TODO: Set minimum and maximum for hot/cold inputs. Check InputFilterMinMax class
     }
 }

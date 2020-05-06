@@ -6,15 +6,17 @@
     <string name="str_http_pass">HTTP Request Successful!</string>
     <string name="str_http_fail">HTTP Request Failed!</string>
     <string name="str_temp_toggle">F° ↔ C°</string>
+    <string name="str_temp_high_title">Hot Temperature Threshold</string>
+    <string name="str_temp_high_summary">What temperature do you consider "warm"?</string>
+    <string name="str_temp_low_title">Cold Temperature Threshold</string>
+    <string name="str_temp_low_summary">What temperature do you consider "cold"?</string>
+    <string name="str_temp_preferred">Preferred Temperature</string>
     <string name="str_ui_color_btn">Select UI Color</string>
     <string name="location">Location :</string>
     <string name="current_temperature">Current Temperature</string>
     <string name="min">Min</string>
     <string name="max">Max</string>
     <string name="what_to_wear">What To Wear</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="degreeSign">°</string>
 
 </resources>

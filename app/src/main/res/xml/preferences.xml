@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory android:title="Settings">
+
+        <SwitchPreferenceCompat
+            app:key="temp_toggle"
+            android:title="@string/str_temp_toggle"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            app:key="temp_high"
+            android:title="@string/str_temp_high_title"
+            android:summary="@string/str_temp_high_summary" />
+
+        <EditTextPreference
+            app:key="temp_low"
+            android:title="@string/str_temp_low_title"
+            android:summary="@string/str_temp_low_summary" />
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
