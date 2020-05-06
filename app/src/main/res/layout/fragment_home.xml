@@ -3,4 +3,127 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment" />
+    tools:context=".HomeFragment" >
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginStart="20sp"
+        android:text="@string/location"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/zipcode"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130sp"
+        android:textSize="15sp"
+        android:enabled="false"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/current_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="260dp"
+        android:text="@string/current_temperature"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/current_tempNumber"
+        android:layout_width="149dp"
+        android:layout_height="98dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="170sp"
+        android:layout_marginEnd="20sp"
+        android:enabled="false"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/degreeSignCurrent"
+        android:layout_width="28dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="210sp"
+        android:layout_marginStart="70sp"
+        android:text="@string/degreeSign"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/minTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="360dp"
+        android:text="@string/min"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/min_tempNumber"
+        android:layout_width="81dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="50sp"
+        android:layout_marginBottom="270sp"
+        android:enabled="false"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/degreeSignMin"
+        android:layout_width="28dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="310sp"
+        android:layout_marginEnd="60sp"
+        android:text="@string/degreeSign"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/maxTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginStart="270dp"
+        android:layout_marginTop="360dp"
+        android:text="@string/max"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/max_tempNumber"
+        android:layout_width="81dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="250sp"
+        android:layout_marginBottom="270sp"
+        android:enabled="false"
+        android:ems="10"
+        android:inputType="number" />
+    <TextView
+        android:id="@+id/degreeSignMax"
+        android:layout_width="28dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="310sp"
+        android:layout_marginStart="140sp"
+        android:text="@string/degreeSign"
+        android:textSize="50sp" />
+    <TextView
+        android:id="@+id/what_to_wear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="150dp"
+        android:text="@string/what_to_wear"
+        android:textSize="25sp" />
+
+
+
+</FrameLayout>
