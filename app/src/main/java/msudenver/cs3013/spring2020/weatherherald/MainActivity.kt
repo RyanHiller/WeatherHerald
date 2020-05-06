@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Render Home fragment by default
+        fragmentManager.beginTransaction().replace(R.id.content_layout, HomeFragment()).commit()
+
         queue = Volley.newRequestQueue(this)
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
