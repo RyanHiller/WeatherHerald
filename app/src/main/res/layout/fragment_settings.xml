@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_ui_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -46,6 +46,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchMaterial" />
+        app:layout_constraintTop_toBottomOf="@+id/switchMaterial"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
