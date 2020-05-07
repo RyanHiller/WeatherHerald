@@ -114,8 +114,15 @@ class MainActivity : AppCompatActivity() {
                 Response.Listener { response ->
                     val data: JSONObject = response.getJSONArray("data")[0] as JSONObject
                     val currentTemp = data.getDouble("temp")
+                    val stateName = data.getString("state_code")
+                    val cityName = data.getString("city_name")
+                    val countryName = data.getString("country_code")
+
                     with(sharedPreferences.edit()) {
                         putFloat("current_temp", currentTemp.toFloat())
+                        putString("state_name", stateName)
+                        putString("city_name", cityName)
+                        putString("country_name", countryName)
                         apply()
                     }
                 }, Response.ErrorListener { error ->

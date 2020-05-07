@@ -12,6 +12,7 @@
     <string name="str_temp_low_summary">What temperature do you consider "cold"?</string>
     <string name="str_temp_preferred">Preferred Temperature</string>
     <string name="str_ui_color_btn">Select UI Color</string>
+    <string name="str_default_location">City, State, Country</string>
     <string name="location">Location :</string>
     <string name="current_temperature">Current Temperature</string>
     <string name="low">Low</string>
