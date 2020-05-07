@@ -3,6 +3,7 @@ package msudenver.cs3013.spring2020.weatherherald
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -14,6 +15,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -31,22 +33,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var stringRequest: StringRequest
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Render Home fragment by default
-        fragmentManager.beginTransaction().replace(R.id.content_layout, HomeFragment()).commit()
-
+        // Variable Initialization
         queue = Volley.newRequestQueue(this)
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        stringRequest = StringRequest(Request.Method.GET, url, Response.Listener { response ->
-            //REQUEST RESPONSE HERE
-        }, Response.ErrorListener { error ->
-            Log.i("WEATHERLOG", "ERROR: $error")
-        })
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+        // Render Home fragment by default
+        fragmentManager.beginTransaction().replace(R.id.content_layout, HomeFragment()).commit()
 
         // Bottom navigation selection listeners
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Get current location/location permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation()
     }
@@ -95,7 +96,11 @@ class MainActivity : AppCompatActivity() {
                     if (location == null) {
                         requestNewLocationData()
                     } else {
-                        // TODO: Set lat and long in preferences here
+                        with(sharedPreferences.edit()) {
+                            putFloat("user_lat", location.latitude.toFloat())
+                            putFloat("user_long", location.longitude.toFloat())
+                            apply()
+                        }
                     }
                 }
             } else {
@@ -126,8 +131,12 @@ class MainActivity : AppCompatActivity() {
     // Callback object for getting location
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
-            var lastLocation: Location = locationResult!!.lastLocation
-            // TODO: Set lat and long in preferences here
+            val lastLocation: Location = locationResult!!.lastLocation
+            with(sharedPreferences.edit()) {
+                putFloat("user_lat", lastLocation.latitude.toFloat())
+                putFloat("user_long", lastLocation.longitude.toFloat())
+                apply()
+            }
         }
     }
 

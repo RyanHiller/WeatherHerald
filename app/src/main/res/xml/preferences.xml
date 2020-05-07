@@ -12,12 +12,12 @@
             android:defaultValue="false" />
 
         <EditTextPreference
-            app:key="temp_high"
+            app:key="user_temp_high"
             android:title="@string/str_temp_high_title"
             android:summary="@string/str_temp_high_summary" />
 
         <EditTextPreference
-            app:key="temp_low"
+            app:key="user_temp_low"
             android:title="@string/str_temp_low_title"
             android:summary="@string/str_temp_low_summary" />
     </PreferenceCategory>
