@@ -11,25 +11,6 @@
     app:layout_constraintEnd_toEndOf="parent">
 
     <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginStart="20sp"
-        android:text="@string/location"
-        android:textSize="25sp" />
-
-    <EditText
-        android:id="@+id/zipcode"
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130sp"
-        android:textSize="15sp"
-        android:enabled="false"
-        android:ems="10"
-        android:inputType="number" />
-
-    <TextView
         android:id="@+id/current_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

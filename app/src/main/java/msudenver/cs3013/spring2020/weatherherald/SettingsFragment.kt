@@ -3,10 +3,12 @@ package msudenver.cs3013.spring2020.weatherherald
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference.SummaryProvider
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -14,8 +16,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         val tempToggle: SwitchPreferenceCompat? = findPreference("temp_toggle")
-        val hotPreference: EditTextPreference? = findPreference("temp_high")
-        val coldPreference: EditTextPreference? = findPreference("temp_low")
+        val hotPreference: EditTextPreference? = findPreference("user_temp_high")
+        val coldPreference: EditTextPreference? = findPreference("user_temp_low")
 
         // OnClick listener for temperature toggle
         tempToggle?.setOnPreferenceClickListener {
@@ -32,9 +34,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // Type binding for user input
         hotPreference?.setOnBindEditTextListener { editText ->
             editText.inputType = InputType.TYPE_CLASS_NUMBER
+            editText.filters = arrayOf(InputFilterMinMax("-125", "125"))
         }
         coldPreference?.setOnBindEditTextListener { editText ->
             editText.inputType = InputType.TYPE_CLASS_NUMBER
+            editText.filters = arrayOf(InputFilterMinMax("-125", "125"))
         }
 
         // Custom summary for hot/cold threshold fields
@@ -54,7 +58,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 "Personal Cold Threshold: $text"
             }
         }
-
-        // TODO: Set minimum and maximum for hot/cold inputs. Check InputFilterMinMax class
     }
 }
