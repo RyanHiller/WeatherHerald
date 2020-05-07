@@ -14,6 +14,8 @@
     <string name="str_ui_color_btn">Select UI Color</string>
     <string name="location">Location :</string>
     <string name="current_temperature">Current Temperature</string>
+    <string name="low">Low</string>
+    <string name="high">High</string>
     <string name="min">Min</string>
     <string name="max">Max</string>
     <string name="what_to_wear">What To Wear</string>

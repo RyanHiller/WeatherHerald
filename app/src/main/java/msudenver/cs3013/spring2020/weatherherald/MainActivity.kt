@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,12 +21,10 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.lang.Integer.parseInt
-import java.net.URL
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
@@ -35,6 +34,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var sharedPreferences: SharedPreferences
 
+    //UI Components
+    private lateinit var currentTemperature: TextView
+    private lateinit var dayLow: TextView
+    private lateinit var dayHigh: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,10 +47,11 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.content_layout, HomeFragment()).commit()
 
         // Variable Initialization
-        queue = Volley.newRequestQueue(this)
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu)
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        queue = Volley.newRequestQueue(this)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Bottom navigation selection listeners
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -84,12 +89,89 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Get current location/location permissions
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getLastLocation()
-
         // Send HTTP requests to get weather data from API
         getWeatherData()
+    }
+
+    // Send HTTP requests to get current weather data and forecast data
+    private fun getWeatherData() {
+        val lastUpdate = sharedPreferences.getLong("last_update", 0)
+        if ((System.currentTimeMillis() / 1000) - lastUpdate > 5) {
+
+            // Update device location
+            getLastLocation()
+
+            // Get weather data for current location and time
+            val lat = sharedPreferences.getFloat("user_lat", 0F)
+            val long = sharedPreferences.getFloat("user_long", 0F)
+            val units =
+                if (sharedPreferences.getBoolean("temp_toggle", false)) "M" else "I"
+            val creds = "30a3a8d02ded4e70ab5adcd53677daab"
+            var url =
+                "https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${long}&units=${units}&key=${creds}"
+
+            var jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
+                Response.Listener { response ->
+                    val data: JSONObject = response.getJSONArray("data")[0] as JSONObject
+                    val currentTemp = data.getDouble("temp")
+                    with(sharedPreferences.edit()) {
+                        putFloat("current_temp", currentTemp.toFloat())
+                        apply()
+                    }
+                }, Response.ErrorListener { error ->
+                    Log.e("WEATHERLOG", "ERROR: $error")
+                }
+            )
+            queue.add(jsonRequest)
+
+            // Get weather data for current location for next 5 days
+            url =
+                "https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${long}&units=${units}&days=3&key=${creds}"
+
+            jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
+                Response.Listener { response ->
+                    val data = response.getJSONArray("data")
+                    val today: JSONObject = data[0] as JSONObject
+                    val day1: JSONObject = data[1] as JSONObject
+                    val day2: JSONObject = data[2] as JSONObject
+
+                    val todayHigh = today.getDouble("high_temp")
+                    val todayLow = today.getDouble("low_temp")
+                    val day1High = day1.getDouble("high_temp")
+                    val day1Low = day1.getDouble("low_temp")
+                    val day2High = day2.getDouble("high_temp")
+                    val day2Low = day2.getDouble("low_temp")
+
+                    Log.i("WEATHERLOG", "$todayHigh")
+                    Log.i("WEATHERLOG", "$todayLow")
+                    Log.i("WEATHERLOG", "$day1High")
+                    Log.i("WEATHERLOG", "$day1Low")
+                    Log.i("WEATHERLOG", "$day2High")
+                    Log.i("WEATHERLOG", "$day2Low")
+
+
+                    with(sharedPreferences.edit()) {
+                        putFloat("today_high", todayHigh.toFloat())
+                        putFloat("today_low", todayLow.toFloat())
+                        putFloat("day1_high", day1High.toFloat())
+                        putFloat("day1_low", day1Low.toFloat())
+                        putFloat("day2_high", day2High.toFloat())
+                        putFloat("day2_low", day2Low.toFloat())
+                        apply()
+                    }
+
+                    // TODO: Handle forecast data
+                }, Response.ErrorListener { error ->
+                    Log.e("WEATHERLOG", "ERROR: $error")
+                }
+            )
+
+            queue.add(jsonRequest)
+            with(sharedPreferences.edit()) {
+                putLong("last_update", (System.currentTimeMillis() / 1000))
+                apply()
+            }
+        }
     }
 
     // Uses the Fused Location Provider API to get the device's location
@@ -111,7 +193,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(baseContext, "Please enable location", Toast.LENGTH_LONG).show()
                 val locationIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(locationIntent)
+                startActivityForResult(locationIntent, LOCATION_INTENT_CODE)
             }
         } else {
             requestPermissions()
@@ -188,48 +270,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Send HTTP requests to get current weather data and forecast data
-    private fun getWeatherData() {
-        val timeDif =
-            (System.currentTimeMillis() / 1000) - sharedPreferences.getInt("update_time", 0)
-        if (timeDif > 1) {
-            // Get weather data for current location and time
-            val lat = sharedPreferences.getFloat("user_lat", 0F)
-            val long = sharedPreferences.getFloat("user_long", 0F)
-            val units =
-                if (sharedPreferences.getBoolean("temp_toggle", false)) "metric" else "imperial"
-            val creds = "b7a9adefd00c27fc11c275915644c062"
-            var url =
-                "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=${units}&appid=${creds}"
-            var jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                Response.Listener { response ->
-                    Log.i("WEATHERLOG", "Current Weather: $response")
-                    with(sharedPreferences.edit()) {
-                        putInt("update_time", response.getInt("dt"))
-                        apply()
-                    }
-                }, Response.ErrorListener { error ->
-                    Log.e("WEATHERLOG", "ERROR: $error")
-                }
-            )
-            queue.add(jsonRequest)
-
-            // Get weather data for current location for next 5 days
-            url =
-                "https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&units=${units}&appid=${creds}"
-            jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                Response.Listener { response ->
-                    Log.i("WEATHERLOG", "Weather Forecast: $response")
-                    // TODO: Handle forecast data
-                }, Response.ErrorListener { error ->
-                    Log.e("WEATHERLOG", "ERROR: $error")
-                }
-            )
-            queue.add(jsonRequest)
-        }
-    }
-
     companion object {
         private const val ACCESS_FINE_LOCATION = 1
+        private const val LOCATION_INTENT_CODE = 101
     }
 }
