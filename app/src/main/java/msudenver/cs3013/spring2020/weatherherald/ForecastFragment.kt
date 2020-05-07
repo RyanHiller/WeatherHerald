@@ -13,13 +13,6 @@ class ForecastFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val pm = PreferenceManager.getDefaultSharedPreferences(activity?.baseContext)
-        Log.i("WEATHERLOG", "TEST1: ${pm.all}")
-        with(pm.edit()) {
-            putString("user_temp_high", "99")
-            apply()
-        }
-        Log.i("WEATHERLOG", "TEST1: ${pm.all}")
 
 
         // Inflate the layout for this fragment

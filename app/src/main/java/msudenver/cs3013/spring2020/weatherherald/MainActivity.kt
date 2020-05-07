@@ -19,19 +19,18 @@ import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
-    private val apiKey = ""
-    private val url = "https://www.google.com"
     private val fragmentManager = supportFragmentManager
     private lateinit var locationManager: LocationManager
     private lateinit var queue: RequestQueue
     private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var stringRequest: StringRequest
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -85,6 +84,26 @@ class MainActivity : AppCompatActivity() {
         // Get current location/location permissions
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Get weather data for current location
+        val lat = sharedPreferences.getFloat("user_lat", 0F)
+        val long = sharedPreferences.getFloat("user_long", 0F)
+        val units = if (sharedPreferences.getBoolean("temp_toggle", false)) "metric" else "imperial"
+        val creds = "b7a9adefd00c27fc11c275915644c062"
+        val url =
+            "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=${units}&appid=${creds}"
+        val jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
+            Response.Listener { response ->
+                Log.i("WEATHERLOG", "$response")
+            }, Response.ErrorListener { error ->
+                Log.e("WEATHERLOG", "ERROR: $error")
+            }
+        )
+
+        queue.add(jsonRequest)
     }
 
     // Uses the Fused Location Provider API to get the device's location
