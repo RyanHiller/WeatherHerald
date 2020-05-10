@@ -20,5 +20,6 @@
     <string name="max">Max</string>
     <string name="what_to_wear">What To Wear</string>
     <string name="degreeSign">°</string>
+    <string name="forecast">Forecast</string>
 
 </resources>
