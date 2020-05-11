@@ -19,6 +19,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/locationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/str_default_location"
+        android:textSize="24sp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeContent"
         android:layout_width="match_parent"

@@ -26,10 +26,15 @@ class HomeFragment : Fragment() {
         val currTempView = view.findViewById<TextView>(R.id.currentTemp)
         val dayHighView = view.findViewById<TextView>(R.id.dayHigh)
         val dayLowView = view.findViewById<TextView>(R.id.dayLow)
+        val locationView = view.findViewById<TextView>(R.id.locationView)
+
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity?.baseContext)
         val currTemp = sharedPreferences.getFloat("current_temp", 0.0F)
         val dayHigh = sharedPreferences.getFloat("today_high", 0.0F)
         val dayLow = sharedPreferences.getFloat("today_low", 0.0F)
+        val city = sharedPreferences.getString("city_name", "")
+        val state = sharedPreferences.getString("state_name", "")
+        val country = sharedPreferences.getString("country_name", "")
         val tempUnit = if (PreferenceManager.getDefaultSharedPreferences(activity?.baseContext)
                 .getBoolean("temp_toggle", false)
         ) "C" else "F"
@@ -38,9 +43,11 @@ class HomeFragment : Fragment() {
         val currTempString = "$currTemp${degreeSign}${tempUnit}"
         val dayHighString = "$dayHigh${degreeSign}${tempUnit}"
         val dayLowString = "$dayLow${degreeSign}${tempUnit}"
+        val locationString = "$city, $state, $country"
 
         currTempView?.text = currTempString
         dayHighView?.text = dayHighString
         dayLowView?.text = dayLowString
+        locationView?.text = locationString
     }
 }
