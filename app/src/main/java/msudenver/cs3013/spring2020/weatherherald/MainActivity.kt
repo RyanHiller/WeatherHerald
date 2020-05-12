@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     // Send HTTP requests to get current weather data and forecast data
     private fun getWeatherData() {
         val lastUpdate = sharedPreferences.getLong("last_update", 0)
-        if ((System.currentTimeMillis() / 1000) - lastUpdate > 5) {
+        if ((System.currentTimeMillis() / 1000) - lastUpdate > 60) {
 
             // Update device location
             getLastLocation()
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
             // Get weather data for current location for next 5 days
             url =
-                "https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${long}&units=${units}&days=3&key=${creds}"
+                "https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${long}&units=${units}&days=8&key=${creds}"
 
             jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener { response ->
@@ -141,6 +141,11 @@ class MainActivity : AppCompatActivity() {
                     val today: JSONObject = data[0] as JSONObject
                     val day1: JSONObject = data[1] as JSONObject
                     val day2: JSONObject = data[2] as JSONObject
+                    val day3: JSONObject = data[3] as JSONObject
+                    val day4: JSONObject = data[4] as JSONObject
+                    val day5: JSONObject = data[5] as JSONObject
+                    val day6: JSONObject = data[6] as JSONObject
+                    val day7: JSONObject = data[7] as JSONObject
 
                     val todayHigh = today.getDouble("high_temp")
                     val todayLow = today.getDouble("low_temp")
@@ -148,6 +153,17 @@ class MainActivity : AppCompatActivity() {
                     val day1Low = day1.getDouble("low_temp")
                     val day2High = day2.getDouble("high_temp")
                     val day2Low = day2.getDouble("low_temp")
+                    val day3High = day3.getDouble("high_temp")
+                    val day3Low = day3.getDouble("low_temp")
+                    val day4High = day4.getDouble("high_temp")
+                    val day4Low = day4.getDouble("low_temp")
+                    val day5High = day5.getDouble("high_temp")
+                    val day5Low = day5.getDouble("low_temp")
+                    val day6High = day6.getDouble("high_temp")
+                    val day6Low = day6.getDouble("low_temp")
+                    val day7High = day7.getDouble("high_temp")
+                    val day7Low = day7.getDouble("low_temp")
+
 
                     Log.i("WEATHERLOG", "$todayHigh")
                     Log.i("WEATHERLOG", "$todayLow")
@@ -164,6 +180,16 @@ class MainActivity : AppCompatActivity() {
                         putFloat("day1_low", day1Low.toFloat())
                         putFloat("day2_high", day2High.toFloat())
                         putFloat("day2_low", day2Low.toFloat())
+                        putFloat("day3_high", day3High.toFloat())
+                        putFloat("day3_low", day3Low.toFloat())
+                        putFloat("day4_high", day4High.toFloat())
+                        putFloat("day4_low", day4Low.toFloat())
+                        putFloat("day5_high", day5High.toFloat())
+                        putFloat("day5_low", day5Low.toFloat())
+                        putFloat("day6_high", day6High.toFloat())
+                        putFloat("day6_low", day6Low.toFloat())
+                        putFloat("day7_high", day7High.toFloat())
+                        putFloat("day7_low", day7Low.toFloat())
                         apply()
                     }
 

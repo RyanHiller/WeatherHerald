@@ -21,6 +21,5 @@ class ForecastDays(val days:ArrayList<String>): RecyclerView.Adapter<ForecastDay
 
     class DayViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview){
         val dayname: TextView  = itemview.dayname
-
     }
 }
