@@ -93,41 +93,7 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/whatToWearTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/what_to_wear"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="120sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/forecastLowContainer" />
-
-        <ImageView
-            android:id="@+id/clothes_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/pants_foreground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.752"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/whatToWearTitle" />
-
-        <ImageView
-            android:id="@+id/clothes_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/lightjacket_foreground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/whatToWearTitle" />
+        
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
