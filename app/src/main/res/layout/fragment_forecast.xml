@@ -20,10 +20,114 @@
         android:textSize="36sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/forecast_content"
+        android:id="@+id/forecast_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/forecast_content"
+        android:layout_width="match_parent"
+        android:layout_height="519dp">
+
+        <LinearLayout
+            android:id="@+id/forecastLowContainer"
+            android:layout_width="139dp"
+            android:layout_height="118dp"
+            android:layout_marginBottom="300sp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/forecast_dayHighContainer"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/forecast_dayLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/forecast_dayLowTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/low"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/forecast_dayHighContainer"
+            android:layout_width="139dp"
+            android:layout_height="118dp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/forecastLowContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/forecastLowContainer"
+            app:layout_constraintTop_toTopOf="@+id/forecastLowContainer">
+
+            <TextView
+                android:id="@+id/forecast_dayHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/forecast_dayHighTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/high"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/whatToWearTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/what_to_wear"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="120sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/forecastLowContainer" />
+
+        <ImageView
+            android:id="@+id/clothes_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/pants_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.752"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/whatToWearTitle" />
+
+        <ImageView
+            android:id="@+id/clothes_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/lightjacket_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/whatToWearTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
