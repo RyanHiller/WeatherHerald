@@ -1,5 +1,6 @@
 package msudenver.cs3013.spring2020.weatherherald
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
@@ -10,6 +11,8 @@ import androidx.preference.Preference.SummaryProvider
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
+import kotlin.math.round
+import kotlin.math.truncate
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -18,14 +21,37 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val tempToggle: SwitchPreferenceCompat? = findPreference("temp_toggle")
         val hotPreference: EditTextPreference? = findPreference("user_temp_high")
         val coldPreference: EditTextPreference? = findPreference("user_temp_low")
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity?.baseContext)
 
         // OnClick listener for temperature toggle
         tempToggle?.setOnPreferenceClickListener {
-            val msg: String = if (tempToggle.isChecked) {
-                "Celsius Mode Enabled"
+            var curr = sharedPreferences.getFloat("current_temp", 0F)
+            var high = sharedPreferences.getFloat("today_high", 0F)
+            var low = sharedPreferences.getFloat("today_low", 0F)
+            var msg = ""
+
+            if (tempToggle.isChecked) {
+                msg = "Celsius Mode Enabled"
+                Log.i("WEATHERLOG", "$curr")
+                curr = toCelsius(curr)
+                Log.i("WEATHERLOG", "$curr")
+                high = toCelsius(high)
+                low = toCelsius(low)
             } else {
-                "Fahrenheit Mode Enabled"
+                msg = "Fahrenheit Mode Enabled"
+                curr = toFahrenheit(curr)
+                high = toFahrenheit(high)
+                low = toFahrenheit(low)
             }
+
+            // Store converted numbers back in SharedPreferences
+            with(sharedPreferences.edit()) {
+                putFloat("current_temp", curr)
+                putFloat("today_high", high)
+                putFloat("today_low", low)
+                apply()
+            }
+
             val toast = Toast.makeText(requireActivity().baseContext, msg, Toast.LENGTH_SHORT)
             toast.show()
             true
@@ -58,5 +84,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 "Personal Cold Threshold: $text"
             }
         }
+    }
+
+    private fun toCelsius(num: Float): Float {
+        var temp = num
+        temp -= 32
+        temp *= 5
+        temp /= 9F
+        temp = round(temp)
+        return temp
+    }
+
+    private fun toFahrenheit(num: Float): Float {
+        var temp = num
+        temp *= 9
+        temp /= 5F
+        temp += 32
+        temp = round(temp)
+        return temp
     }
 }

@@ -34,17 +34,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var sharedPreferences: SharedPreferences
 
-    //UI Components
-    private lateinit var currentTemperature: TextView
-    private lateinit var dayLow: TextView
-    private lateinit var dayHigh: TextView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Render Home fragment by default
-        fragmentManager.beginTransaction().replace(R.id.content_layout, HomeFragment()).commit()
 
         // Variable Initialization
         bottomNavigationView = findViewById(R.id.bottom_navigation_menu)
@@ -91,6 +83,9 @@ class MainActivity : AppCompatActivity() {
 
         // Send HTTP requests to get weather data from API
         getWeatherData()
+
+        // Render Home fragment by default
+        fragmentManager.beginTransaction().replace(R.id.content_layout, HomeFragment()).commit()
     }
 
     // Send HTTP requests to get current weather data and forecast data
@@ -113,13 +108,17 @@ class MainActivity : AppCompatActivity() {
             var jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener { response ->
                     val data: JSONObject = response.getJSONArray("data")[0] as JSONObject
+                    val weather: JSONObject = data.getJSONObject("weather")
                     val currentTemp = data.getDouble("temp")
+                    val icon =
+                        "https://www.weatherbit.io/static/img/icons/${weather.getString("icon")}.png"
                     val stateName = data.getString("state_code")
                     val cityName = data.getString("city_name")
                     val countryName = data.getString("country_code")
 
                     with(sharedPreferences.edit()) {
                         putFloat("current_temp", currentTemp.toFloat())
+                        putString("current_icon", icon)
                         putString("state_name", stateName)
                         putString("city_name", cityName)
                         putString("country_name", countryName)
@@ -163,14 +162,6 @@ class MainActivity : AppCompatActivity() {
                     val day6Low = day6.getDouble("low_temp")
                     val day7High = day7.getDouble("high_temp")
                     val day7Low = day7.getDouble("low_temp")
-
-
-                    Log.i("WEATHERLOG", "$todayHigh")
-                    Log.i("WEATHERLOG", "$todayLow")
-                    Log.i("WEATHERLOG", "$day1High")
-                    Log.i("WEATHERLOG", "$day1Low")
-                    Log.i("WEATHERLOG", "$day2High")
-                    Log.i("WEATHERLOG", "$day2Low")
 
 
                     with(sharedPreferences.edit()) {
