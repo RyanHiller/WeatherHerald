@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.preference.PreferenceManager
+import com.squareup.picasso.Picasso
 
 class HomeFragment : Fragment() {
     override fun onCreateView(
@@ -27,11 +29,13 @@ class HomeFragment : Fragment() {
         val dayHighView = view.findViewById<TextView>(R.id.dayHigh)
         val dayLowView = view.findViewById<TextView>(R.id.dayLow)
         val locationView = view.findViewById<TextView>(R.id.locationView)
+        val iconView = view.findViewById<ImageView>(R.id.weatherIcon)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity?.baseContext)
         val currTemp = sharedPreferences.getFloat("current_temp", 0.0F)
         val dayHigh = sharedPreferences.getFloat("today_high", 0.0F)
         val dayLow = sharedPreferences.getFloat("today_low", 0.0F)
+        val icon = sharedPreferences.getString("current_icon", "")
         val city = sharedPreferences.getString("city_name", "")
         val state = sharedPreferences.getString("state_name", "")
         val country = sharedPreferences.getString("country_name", "")
@@ -45,6 +49,9 @@ class HomeFragment : Fragment() {
         val dayLowString = "$dayLow${degreeSign}${tempUnit}"
         val locationString = "$city, $state, $country"
 
+        if (icon != "") {
+            Picasso.get().load(icon).into(iconView)
+        }
         currTempView?.text = currTempString
         dayHighView?.text = dayHighString
         dayLowView?.text = dayLowString
